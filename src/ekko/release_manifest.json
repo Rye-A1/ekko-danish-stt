@@ -1,6 +1,6 @@
 {
   "schema": "ekko-release-manifest-v1",
-  "release_version": "0.1.0",
+  "release_version": "0.1.1",
   "distribution": "ekko-stt",
   "keywords": [
     "Danish speech-to-text",

@@ -16,24 +16,22 @@ capitalization model. This repository contains the Python runtime and the
 
 ## Run locally
 
-Install [uv](https://docs.astral.sh/uv/), then from this checkout:
+Install [uv](https://docs.astral.sh/uv/), then format an existing transcript:
 
 ```bash
-uv sync --locked --no-editable --extra pnc
-uv run --no-sync ekko tiny audio.wav --pnc --format json
+uvx --from 'ekko-stt[pnc]' ekko pnc "hej mit navn er emil hvordan går det i dag"
 ```
 
-To format an existing transcript without running speech recognition:
+Transcribe a file and apply PnC:
 
 ```bash
-uv run --no-sync ekko pnc "hej mit navn er emil hvordan går det i dag"
+uvx --from 'ekko-stt[pnc]' ekko tiny audio.wav --pnc --format json
 ```
 
-For the ONNX runtime:
+For Tiny's ONNX runtime:
 
 ```bash
-uv sync --locked --no-editable --extra tiny-onnx --extra pnc
-uv run --no-sync ekko tiny-onnx audio.wav --precision int8 --pnc --format json
+uvx --from 'ekko-stt[tiny-onnx,pnc]' ekko tiny-onnx audio.wav --precision int8 --pnc --format json
 ```
 
 The first run downloads model artifacts from Hugging Face and the native
