@@ -1,6 +1,6 @@
-# Ekko Danish STT
+# Ekko STT
 
-![Ekko v1 Tiny — Danish speech-to-text](assets/ekko-tiny-cover.png)
+![Ekko STT: Tiny speech recognition and PnC text formatting](assets/ekko-stt-cover.png)
 
 Local inference for [Ekko v1 Tiny](https://huggingface.co/RyeAI/ekko-v1-tiny),
 a Danish speech recognizer with word timestamps, and
