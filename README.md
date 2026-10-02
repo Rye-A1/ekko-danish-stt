@@ -18,14 +18,14 @@ capitalization model. This repository contains the Python runtime and the
 Install [uv](https://docs.astral.sh/uv/), then from this checkout:
 
 ```bash
-uv sync --locked --extra pnc
+uv sync --locked --no-editable --extra pnc
 uv run --no-sync ekko tiny audio.wav --pnc --format json
 ```
 
 For the ONNX runtime:
 
 ```bash
-uv sync --locked --extra tiny-onnx --extra pnc
+uv sync --locked --no-editable --extra tiny-onnx --extra pnc
 uv run --no-sync ekko tiny-onnx audio.wav --precision int8 --pnc --format json
 ```
 
