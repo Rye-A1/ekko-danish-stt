@@ -105,6 +105,21 @@ class CLITest(unittest.TestCase):
         self.assertIn('"text": "Hej."', output.getvalue())
         backend.assert_called_once_with("onnx", precision="fp32", threads=8)
 
+    @patch("ekko.cli.Punctuator")
+    @patch("ekko.cli.ensure_pnc_directory", return_value="pnc")
+    def test_pnc_text_route(self, directory, punctuator) -> None:
+        punctuator.return_value.return_value = "Hej, Emil."
+        output = io.StringIO()
+
+        with redirect_stdout(output):
+            exit_code = main(["pnc", "hej emil", "--offline"])
+
+        self.assertEqual(exit_code, 0)
+        directory.assert_called_once_with(offline=True)
+        punctuator.assert_called_once_with("pnc")
+        punctuator.return_value.assert_called_once_with("hej emil")
+        self.assertEqual(output.getvalue(), "Hej, Emil.\n")
+
     def test_all_download_profiles_resolve_exact_artifacts(self) -> None:
         pnc = ["pnc-model", "pnc-tokenizer", "pnc-config"]
         profiles = {

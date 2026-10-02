@@ -80,6 +80,16 @@ def _run_tiny_onnx(args: argparse.Namespace) -> None:
     _print_result(result, args.output_format)
 
 
+def _run_pnc(args: argparse.Namespace) -> None:
+    directory = (
+        Path(args.model_dir).expanduser()
+        if args.model_dir
+        else ensure_pnc_directory(offline=args.offline)
+    )
+    text = sys.stdin.read() if args.text == "-" else args.text
+    print(Punctuator(directory)(text))
+
+
 def _download(args: argparse.Namespace) -> None:
     names = {
         "tiny": ("tiny",),
@@ -147,6 +157,14 @@ def build_parser() -> argparse.ArgumentParser:
         "--format", dest="output_format", choices=("text", "json"), default="text"
     )
     tiny_onnx.set_defaults(handler=_run_tiny_onnx)
+
+    pnc = subparsers.add_parser(
+        "pnc", help="punctuate and capitalize Danish text"
+    )
+    pnc.add_argument("text", help='text to format, or "-" to read standard input')
+    pnc.add_argument("--model-dir")
+    pnc.add_argument("--offline", action="store_true")
+    pnc.set_defaults(handler=_run_pnc)
 
     download = subparsers.add_parser(
         "download", help="download and verify a pinned release profile"

@@ -12,6 +12,7 @@ capitalization model. This repository contains the Python runtime and the
 |---|---|---|
 | `ekko tiny` | parakeet.cpp | Q5_0 GGUF |
 | `ekko tiny-onnx` | sherpa-onnx | int8 ONNX |
+| `ekko pnc` | ONNX Runtime | PnC int8 |
 
 ## Run locally
 
@@ -20,6 +21,12 @@ Install [uv](https://docs.astral.sh/uv/), then from this checkout:
 ```bash
 uv sync --locked --no-editable --extra pnc
 uv run --no-sync ekko tiny audio.wav --pnc --format json
+```
+
+To format an existing transcript without running speech recognition:
+
+```bash
+uv run --no-sync ekko pnc "hej mit navn er emil hvordan går det i dag"
 ```
 
 For the ONNX runtime:
