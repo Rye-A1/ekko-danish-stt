@@ -1,0 +1,193 @@
+{
+  "schema": "ekko-release-manifest-v1",
+  "release_version": "0.1.0",
+  "distribution": "ekko-stt",
+  "keywords": [
+    "Danish speech-to-text",
+    "Danish speech recognition",
+    "offline ASR",
+    "local transcription",
+    "GGUF speech recognition",
+    "word timestamps",
+    "punctuation restoration"
+  ],
+  "native_runtime": {
+    "name": "parakeet.cpp",
+    "version": "0.5.0",
+    "release_url": "https://github.com/mudler/parakeet.cpp/releases/download/v0.5.0",
+    "artifacts": {
+      "darwin/arm64": {
+        "archive": "parakeet-v0.5.0-lib-macos-metal-arm64.tar.gz",
+        "sha256": "5fd8469ef4d1dfd045c77bb5fad12d8726a0eb6346ba1fd4ffa6128bab0adc9f",
+        "directory": "parakeet-v0.5.0-lib-macos-metal-arm64",
+        "library": "libparakeet.dylib",
+        "library_sha256": "ac28f43bba598ebc8f6baeead129e0c43e5c82378461f83b938f75d28404b909"
+      },
+      "darwin/x86_64": {
+        "archive": "parakeet-v0.5.0-lib-macos-cpu-x64.tar.gz",
+        "sha256": "3eddf9ec3a75543eada6161948bc3244e166a503c2a16b8c532673f6708a6187",
+        "directory": "parakeet-v0.5.0-lib-macos-cpu-x64",
+        "library": "libparakeet.dylib",
+        "library_sha256": "350e4443ca7fc1bb7fbe7778dc3abc51ce10b2d951e02c9582aa5581c98c3110"
+      },
+      "linux/aarch64": {
+        "archive": "parakeet-v0.5.0-lib-linux-cpu-arm64.tar.gz",
+        "sha256": "c932e2bc46d763d51e9cb3955fd6e7b0d60291d07bbd1054bcca09e6e3cce8da",
+        "directory": "parakeet-v0.5.0-lib-linux-cpu-arm64",
+        "library": "libparakeet.so",
+        "library_sha256": "43b52742847c7eb30600408adce65d867a56e2b17be59dc6c8d569c890b4c00d"
+      },
+      "linux/x86_64": {
+        "archive": "parakeet-v0.5.0-lib-linux-cpu-x64.tar.gz",
+        "sha256": "07cc1095924a134fe5dc7e6e44247fea4eada70ba56a663f73281b96da0624f2",
+        "directory": "parakeet-v0.5.0-lib-linux-cpu-x64",
+        "library": "libparakeet.so",
+        "library_sha256": "d02d1af359699e93b6e6a3613c6ffa87143473f43c143d071816c21e059d6760"
+      },
+      "win32/amd64": {
+        "archive": "parakeet-v0.5.0-lib-win-cpu-x64.zip",
+        "sha256": "0e9b8a305bf25a485b27bbcb2496fbd5bc8a0653d39c24a76c87a2053966a453",
+        "directory": "parakeet-v0.5.0-lib-win-cpu-x64",
+        "library": "parakeet.dll",
+        "library_sha256": "7262eef3e3b25423aced305c08d363232760ec4c6f6128340fa0e22c6bde1017"
+      }
+    }
+  },
+  "models": {
+    "tiny": {
+      "name": "Ekko v1 Tiny",
+      "repo_id": "RyeAI/ekko-v1-tiny",
+      "snapshot_revision": "e37e698805c538e447c25062ab13fa862462ee9e",
+      "base_model": "nvidia/parakeet-rnnt-110m-da-dk",
+      "runtime": "parakeet.cpp 0.5.0 or sherpa-onnx 1.13.6",
+      "default_artifact": "tiny",
+      "word_timestamps": true,
+      "license": "ekko-composite-model-terms",
+      "license_files": {
+        "MODEL_LICENSE.md": "3f0c10a453c459d4342fe0f079c98677fd733f9a49b5ad2084b5e2e159370c07",
+        "NOTICE": "1d720ec5fac9815e9374778a39406cb23a775b44c7fb0185709461cc597affef",
+        "LICENSES/CC-BY-4.0.txt": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+        "LICENSES/CORAL-LICENSE": "ee93c98df9a894464d1c042b66c6039543776c463d06d1a6e93f176e08ca67bd",
+        "LICENSES/FTSPEECH-LICENSE.md": "39708f5d77ae217b3a540363cb1b37fe079478e4ed1d3464f38d05d5a1c58b9a",
+        "LICENSES/NVIDIA-OPEN-MODEL-LICENSE.pdf": "4d2fb590aa9b30c47f2058bff17291df7fa2aa0c1bd775a20703da9bb267cfab"
+      }
+    },
+    "pnc": {
+      "name": "Ekko PnC v2",
+      "repo_id": "RyeAI/ekko-pnc",
+      "snapshot_revision": "d3129544e4e0155093e192cac58a9e69a4dea1ff",
+      "base_model": "jonfd/electra-small-nordic",
+      "runtime": "ONNX Runtime 1.29.0",
+      "default_artifact": "pnc-model",
+      "word_timestamps": false,
+      "license": "cc-by-4.0",
+      "license_files": {
+        "MODEL_LICENSE.md": "590f820521961c89e7795bd3f46575794f4cbdcb02cc9db682e825c0afc874aa",
+        "NOTICE": "bc86a9b47ff32a3ab29bb0ff8f414ae8b2ef1932ccf8bae2e4dacb5a6812ba8d",
+        "LICENSES/CC-BY-4.0.txt": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+        "LICENSES/CC0-1.0.txt": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+        "LICENSES/CORAL-LICENSE": "ee93c98df9a894464d1c042b66c6039543776c463d06d1a6e93f176e08ca67bd",
+        "LICENSES/FTSPEECH-LICENSE.md": "39708f5d77ae217b3a540363cb1b37fe079478e4ed1d3464f38d05d5a1c58b9a"
+      }
+    }
+  },
+  "artifacts": {
+    "tiny": {
+      "repo_id": "RyeAI/ekko-v1-tiny",
+      "revision": "e37e698805c538e447c25062ab13fa862462ee9e",
+      "filename": "gguf-parakeet.cpp/ekko-v1-tiny-q5_0.gguf",
+      "sha256": "f5380485d80d552ae46313185126d7ade54b2e7360cb0d15b91f1ab26ced7791",
+      "dialect": "parakeet.cpp"
+    },
+    "tiny-onnx-fp32-encoder": {
+      "repo_id": "RyeAI/ekko-v1-tiny",
+      "revision": "e37e698805c538e447c25062ab13fa862462ee9e",
+      "filename": "onnx-sherpa/encoder.onnx",
+      "sha256": "f5e01dfa2d4cb89c52a7730092d94ed57325c17a6f06fc76f5d322de6f66cbc4",
+      "dialect": "sherpa-onnx"
+    },
+    "tiny-onnx-fp32-decoder": {
+      "repo_id": "RyeAI/ekko-v1-tiny",
+      "revision": "e37e698805c538e447c25062ab13fa862462ee9e",
+      "filename": "onnx-sherpa/decoder.onnx",
+      "sha256": "8becdcb3cbbf372e466d55d10830cbc45e78d21028cdb26f523f5827117894ef",
+      "dialect": "sherpa-onnx"
+    },
+    "tiny-onnx-fp32-joiner": {
+      "repo_id": "RyeAI/ekko-v1-tiny",
+      "revision": "e37e698805c538e447c25062ab13fa862462ee9e",
+      "filename": "onnx-sherpa/joiner.onnx",
+      "sha256": "7b51320e78eb4bc57f4fdc32783be4deeba1a6ecdbaf006681fc0a30e732c0c2",
+      "dialect": "sherpa-onnx"
+    },
+    "tiny-onnx-int8-encoder": {
+      "repo_id": "RyeAI/ekko-v1-tiny",
+      "revision": "e37e698805c538e447c25062ab13fa862462ee9e",
+      "filename": "onnx-sherpa/encoder.int8.onnx",
+      "sha256": "e7ee366cb92cbf5b14beee01f04245293185ec3b271bb12acd7715e94d1f4cf2",
+      "dialect": "sherpa-onnx"
+    },
+    "tiny-onnx-int8-decoder": {
+      "repo_id": "RyeAI/ekko-v1-tiny",
+      "revision": "e37e698805c538e447c25062ab13fa862462ee9e",
+      "filename": "onnx-sherpa/decoder.int8.onnx",
+      "sha256": "09beaa741719190c0052566a0785de0de212f1b89b0e8e8293fe08e1d0ebb352",
+      "dialect": "sherpa-onnx"
+    },
+    "tiny-onnx-int8-joiner": {
+      "repo_id": "RyeAI/ekko-v1-tiny",
+      "revision": "e37e698805c538e447c25062ab13fa862462ee9e",
+      "filename": "onnx-sherpa/joiner.int8.onnx",
+      "sha256": "894007e36304dcc24584e2dbbe4dff9b47088fd6e9c0763f38344b270a2ccc72",
+      "dialect": "sherpa-onnx"
+    },
+    "tiny-onnx-tokens": {
+      "repo_id": "RyeAI/ekko-v1-tiny",
+      "revision": "e37e698805c538e447c25062ab13fa862462ee9e",
+      "filename": "onnx-sherpa/tokens.txt",
+      "sha256": "f6240fdbb496236106174a08b086a1a59a209aea50c5468b5233f0da9e62780b",
+      "dialect": "sherpa-onnx"
+    },
+    "pnc-model": {
+      "repo_id": "RyeAI/ekko-pnc",
+      "revision": "d3129544e4e0155093e192cac58a9e69a4dea1ff",
+      "filename": "pnc.int8.onnx",
+      "sha256": "46bb979d409731872f10b6cb71298594595f16368d2aec2fcaf94d87b4266527",
+      "dialect": "onnx"
+    },
+    "pnc-tokenizer": {
+      "repo_id": "RyeAI/ekko-pnc",
+      "revision": "d3129544e4e0155093e192cac58a9e69a4dea1ff",
+      "filename": "tokenizer.json",
+      "sha256": "a1e0d43ee307ad7a1ccc23e6e5398d877a68ca7f576067ac507625a0d50e9502",
+      "dialect": "tokenizers"
+    },
+    "pnc-config": {
+      "repo_id": "RyeAI/ekko-pnc",
+      "revision": "d3129544e4e0155093e192cac58a9e69a4dea1ff",
+      "filename": "config.json",
+      "sha256": "dc655c46f69eeb15dd43786ad58fb5862cc794b36cc9d2c426ab5bc4b01f23ca",
+      "dialect": "transformers"
+    }
+  },
+  "validated_platforms": {
+    "macos-arm64": [
+      "tiny",
+      "tiny-onnx-fp32",
+      "tiny-onnx-int8",
+      "pnc"
+    ],
+    "linux-x64": [
+      "tiny",
+      "tiny-onnx-fp32",
+      "tiny-onnx-int8",
+      "pnc"
+    ],
+    "windows-x64": [
+      "tiny",
+      "tiny-onnx-fp32",
+      "tiny-onnx-int8",
+      "pnc"
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ekko-stt"
+version = "0.1.0"
+description = "Local Danish speech recognition with Ekko v1 Tiny"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES.md"]
+authors = [{name = "Emil Schledermann / RyeAI"}]
+keywords = ["asr", "danish", "speech-to-text", "onnx", "gguf"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+dependencies = [
+    "filelock>=3.13,<4",
+    "huggingface-hub>=0.27,<2",
+    "numpy>=1.26,<3",
+    "soundfile>=0.12,<1",
+    "soxr>=0.5,<2",
+]
+
+[project.optional-dependencies]
+pnc = ["onnxruntime==1.29.0", "tokenizers==0.22.2"]
+tiny-onnx = ["sherpa-onnx==1.13.6", "sherpa-onnx-core==1.13.6"]
+local = [
+    "onnxruntime==1.29.0",
+    "sherpa-onnx==1.13.6",
+    "sherpa-onnx-core==1.13.6",
+    "tokenizers==0.22.2",
+]
+
+[project.scripts]
+ekko = "ekko.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Rye-A1/ekko-danish-stt"
+Issues = "https://github.com/Rye-A1/ekko-danish-stt/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ekko = ["release_manifest.json"]

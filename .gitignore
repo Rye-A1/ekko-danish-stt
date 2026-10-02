@@ -1,0 +1,21 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+*.gguf
+*.nemo
+*.onnx
+*.onnx.data
+:memory:.ses
+*.mlmodelc/
+*.mlpackage/
+.cache/
+
+# Demo deployment secrets
+demo/*/deploy/.env

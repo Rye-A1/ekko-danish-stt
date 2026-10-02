@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Lokal dansk talegenkendelse i browseren med Ekko v1 Tiny."
+    />
+    <meta name="theme-color" content="#f3f4f0" />
+    <title>Ekko v1 Tiny | Rye AI</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=20260926-9" />
+  </head>
+  <body>
+    <canvas id="ambient" aria-hidden="true"></canvas>
+
+    <header class="topbar">
+      <a class="brand" href="https://rye-ai.com" target="_blank" rel="noreferrer">
+        <span class="brand-mark">Rye AI</span>
+        <span class="brand-divider">/</span>
+        <span class="product-name">EKKO-TINY-V1</span>
+      </a>
+      <div class="topbar-actions">
+        <button class="circle-button theme-button" id="themeButton" type="button" aria-label="Slå mørk tilstand til" title="Slå mørk tilstand til" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 15.5A8.5 8.5 0 0 1 8.5 3.8 8.5 8.5 0 1 0 20.2 15.5Z" /></svg>
+        </button>
+        <button class="circle-button" id="infoButton" aria-label="Om demoen" title="Om demoen">
+          <span aria-hidden="true">i</span>
+        </button>
+        <button class="circle-button sliders" id="settingsButton" aria-label="Indstillinger" title="Indstillinger">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <main class="scene" id="app">
+      <section class="intro" aria-labelledby="pageTitle">
+        <h1 id="pageTitle">Sig det til Ekko</h1>
+        <p class="intro-copy">
+          Dansk tale til tekst - direkte i din browser.<br />
+          Ingen lyd eller tekst forlader din enhed.
+        </p>
+      </section>
+
+      <section class="workspace" aria-label="Transskription">
+        <div class="model-status" aria-live="polite">
+          <span class="status-dot" id="statusDot"></span>
+          <span id="statusText">Forbereder lokal model</span>
+          <span id="statusDetail"></span>
+        </div>
+        <div class="progress-track" id="progressTrack" aria-hidden="true">
+          <span id="progressBar"></span>
+        </div>
+
+        <div id="livePanel" class="mode-panel">
+          <button class="stage" id="recordButton" disabled aria-label="Begynd optagelse">
+            <span class="ring ring-1" aria-hidden="true"></span>
+            <span class="orb" id="orb" aria-hidden="true"></span>
+          </button>
+          <div class="stage-copy">
+            <p class="stage-label" id="recordLabel">Modellen indlæses</p>
+            <p class="stage-note">Tekst vises løbende, mens du taler</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="transcript" id="transcriptPanel" aria-labelledby="transcriptTitle">
+        <h2 id="transcriptTitle" hidden>Transskription</h2>
+        <div class="empty-transcript" id="emptyTranscript">
+          Din transskription vises her.
+        </div>
+        <ol class="segments" id="segments" aria-live="polite"></ol>
+      </section>
+      <div class="transcript-heading" aria-label="Transskriptionshandlinger">
+        <div class="transcript-actions">
+          <button class="icon-button" id="copyButton" disabled title="Kopiér tekst" aria-label="Kopiér tekst">⧉</button>
+          <button class="icon-button" id="downloadButton" disabled title="Hent JSON" aria-label="Hent JSON">↓</button>
+          <button class="icon-button" id="clearButton" disabled title="Ryd" aria-label="Ryd">×</button>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <span>Ekko v1 Tiny + PnC · int8 · CPU/WASM</span>
+      <nav class="footer-links" aria-label="Modeller, kildekode og Rye AI">
+        <a class="footer-chip footer-chip--tiny" href="https://huggingface.co/RyeAI/ekko-v1-tiny" target="_blank" rel="noreferrer" aria-label="Ekko v1 Tiny på Hugging Face">
+          <img src="huggingface-logo.svg" width="16" height="16" alt="" aria-hidden="true" />
+          <span>Tiny</span>
+        </a>
+        <a class="footer-chip footer-chip--pnc" href="https://huggingface.co/RyeAI/ekko-pnc" target="_blank" rel="noreferrer" aria-label="Ekko PnC på Hugging Face">
+          <img src="huggingface-logo.svg" width="16" height="16" alt="" aria-hidden="true" />
+          <span>PnC</span>
+        </a>
+        <a class="footer-chip footer-chip--github" href="https://github.com/Rye-A1/ekko-danish-stt" target="_blank" rel="noreferrer" aria-label="Ekko kildekode på GitHub">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 19 4.77 5.07 5.07 0 0 0 18.91 1S17.73.65 15 2.48a13.38 13.38 0 0 0-7 0C5.27.65 4.09 1 4.09 1A5.07 5.07 0 0 0 4 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 8 18.13V22" />
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <a class="footer-chip footer-chip--linkedin" href="https://www.linkedin.com/company/rye-a1" target="_blank" rel="noreferrer" aria-label="Rye AI på LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M8 11v5M8 8v.01M12 16v-5M16 16v-3a2 2 0 1 0-4 0M3 7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7" />
+          </svg>
+          <span>LinkedIn</span>
+        </a>
+      </nav>
+    </footer>
+
+    <dialog id="microphoneDialog" aria-labelledby="microphoneTitle" aria-describedby="microphoneDescription">
+      <div class="microphone-dialog-content">
+        <button class="dialog-close" id="microphoneCloseButton" type="button" aria-label="Luk">×</button>
+        <div class="microphone-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="2" width="6" height="12" rx="3" />
+            <path d="M5 10a7 7 0 0 0 14 0M12 17v5m-4 0h8" />
+          </svg>
+        </div>
+        <p class="section-label">FØR DU BEGYNDER</p>
+        <h2 id="microphoneTitle">Giv Ekko adgang til din mikrofon</h2>
+        <p id="microphoneDescription">Mikrofonen bruges kun, mens du optager. Lyd og tekst behandles på din enhed, og lyd gemmes ikke.</p>
+        <p class="microphone-browser-note" id="microphoneHelp">Når du fortsætter, beder browseren dig om at vælge Tillad.</p>
+        <div class="microphone-actions">
+          <button class="microphone-secondary" id="microphoneCancelButton" type="button">Ikke nu</button>
+          <button class="microphone-primary" id="microphoneContinueButton" type="button">Fortsæt</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog id="infoDialog">
+      <form method="dialog">
+        <button class="dialog-close" aria-label="Luk">×</button>
+        <p class="section-label">OM DEMOEN</p>
+        <h2>Alt sker lokalt</h2>
+        <p>
+          Modellen hentes ved første besøg og kører derefter i browserens
+          WebAssembly-runtime. Ingen lyd, tekst eller brugsdata forlader din browser.
+        </p>
+        <dl>
+          <div>
+            <dt>Talegenkendelse</dt>
+            <dd>
+              <a class="model-link" href="https://huggingface.co/RyeAI/ekko-v1-tiny" target="_blank" rel="noreferrer">
+                Ekko v1 Tiny int8
+                <svg class="lucide lucide-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt>Tegnsætning</dt>
+            <dd>
+              <a class="model-link" href="https://huggingface.co/RyeAI/ekko-pnc" target="_blank" rel="noreferrer">
+                Ekko PnC v2 int8
+                <svg class="lucide lucide-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </a>
+            </dd>
+          </div>
+          <div><dt>Runtime</dt><dd>sherpa-onnx + ONNX Runtime</dd></div>
+          <div><dt>Modelstørrelse</dt><dd>ca. 153 MiB samlet</dd></div>
+          <div><dt>Kildekode</dt><dd><a class="model-link" href="https://github.com/Rye-A1/ekko-danish-stt" target="_blank" rel="noreferrer">Ekko på GitHub</a></dd></div>
+        </dl>
+      </form>
+    </dialog>
+
+    <dialog id="settingsDialog">
+      <form method="dialog">
+        <button class="dialog-close" aria-label="Luk">×</button>
+        <p class="section-label">INDSTILLINGER</p>
+        <h2>Transskription</h2>
+        <div class="setting-row">
+          <span><strong>Tegnsætning</strong><small id="pncStatus">Hentes i baggrunden</small></span>
+        </div>
+        <section class="history-section" aria-labelledby="historyTitle">
+          <div class="history-title-row">
+            <div>
+              <p class="section-label">HISTORIK</p>
+              <h2 id="historyTitle">Tidligere samtaler</h2>
+            </div>
+            <button class="history-clear" id="clearHistoryButton" type="button" disabled>Ryd alle</button>
+          </div>
+          <p>Kun transskriptioner gemmes i denne browser. Lyd gemmes ikke.</p>
+          <p class="history-empty" id="historyEmpty">Ingen gemte samtaler endnu.</p>
+          <ol class="history-list" id="historyList" hidden></ol>
+        </section>
+      </form>
+    </dialog>
+
+    <script src="app.js?v=20261001-3" type="module"></script>
+  </body>
+</html>

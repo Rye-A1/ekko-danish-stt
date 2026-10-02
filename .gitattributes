@@ -1,0 +1,3 @@
+src/ekko/release_manifest.json text eol=lf
+demo/ekko-tiny-browser/model-config.json text eol=lf
+demo/ekko-tiny-browser/runtime-config.json text eol=lf

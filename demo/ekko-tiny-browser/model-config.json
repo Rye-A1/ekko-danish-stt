@@ -1,0 +1,72 @@
+{
+  "schema": "ekko-browser-model-v1",
+  "name": "Ekko v1 Tiny int8",
+  "repository": "RyeAI/ekko-v1-tiny",
+  "revision": "e37e698805c538e447c25062ab13fa862462ee9e",
+  "runtime": "sherpa-onnx 1.13.6 WebAssembly",
+  "pnc": {
+    "name": "Ekko PnC v2 int8",
+    "repository": "RyeAI/ekko-pnc",
+    "revision": "d3129544e4e0155093e192cac58a9e69a4dea1ff",
+    "runtime": "onnxruntime-web 1.29.0",
+    "maxLength": 256,
+    "files": [
+      {
+        "path": "pnc.int8.onnx",
+        "url": "https://huggingface.co/RyeAI/ekko-pnc/resolve/d3129544e4e0155093e192cac58a9e69a4dea1ff/pnc.int8.onnx?download=true",
+        "sha256": "46bb979d409731872f10b6cb71298594595f16368d2aec2fcaf94d87b4266527",
+        "bytes": 22424741
+      },
+      {
+        "path": "tokenizer.json",
+        "url": "https://huggingface.co/RyeAI/ekko-pnc/resolve/d3129544e4e0155093e192cac58a9e69a4dea1ff/tokenizer.json?download=true",
+        "sha256": "a1e0d43ee307ad7a1ccc23e6e5398d877a68ca7f576067ac507625a0d50e9502",
+        "bytes": 2301084
+      },
+      {
+        "path": "config.json",
+        "url": "https://huggingface.co/RyeAI/ekko-pnc/resolve/d3129544e4e0155093e192cac58a9e69a4dea1ff/config.json?download=true",
+        "sha256": "dc655c46f69eeb15dd43786ad58fb5862cc794b36cc9d2c426ab5bc4b01f23ca",
+        "bytes": 1062
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "runtime-config.json",
+      "url": "https://huggingface.co/RyeAI/ekko-v1-tiny/resolve/e37e698805c538e447c25062ab13fa862462ee9e/onnx-sherpa/runtime-config.json?download=true",
+      "sha256": "197ec64ea58975cb70c8bac645593bbaaa7ac7b261999b35b7d2986a26a41da5",
+      "bytes": 121
+    },
+    {
+      "path": "nemo-transducer-encoder.onnx",
+      "url": "https://huggingface.co/RyeAI/ekko-v1-tiny/resolve/e37e698805c538e447c25062ab13fa862462ee9e/onnx-sherpa/encoder.int8.onnx?download=true",
+      "sha256": "e7ee366cb92cbf5b14beee01f04245293185ec3b271bb12acd7715e94d1f4cf2",
+      "bytes": 131201109
+    },
+    {
+      "path": "nemo-transducer-decoder.onnx",
+      "url": "https://huggingface.co/RyeAI/ekko-v1-tiny/resolve/e37e698805c538e447c25062ab13fa862462ee9e/onnx-sherpa/decoder.int8.onnx?download=true",
+      "sha256": "09beaa741719190c0052566a0785de0de212f1b89b0e8e8293fe08e1d0ebb352",
+      "bytes": 3328663
+    },
+    {
+      "path": "nemo-transducer-joiner.onnx",
+      "url": "https://huggingface.co/RyeAI/ekko-v1-tiny/resolve/e37e698805c538e447c25062ab13fa862462ee9e/onnx-sherpa/joiner.int8.onnx?download=true",
+      "sha256": "894007e36304dcc24584e2dbbe4dff9b47088fd6e9c0763f38344b270a2ccc72",
+      "bytes": 777055
+    },
+    {
+      "path": "tokens.txt",
+      "url": "https://huggingface.co/RyeAI/ekko-v1-tiny/resolve/e37e698805c538e447c25062ab13fa862462ee9e/onnx-sherpa/tokens.txt?download=true",
+      "sha256": "f6240fdbb496236106174a08b086a1a59a209aea50c5468b5233f0da9e62780b",
+      "bytes": 231
+    },
+    {
+      "path": "silero_vad.onnx",
+      "url": "model-files/tiny/silero_vad.onnx?sha256=9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+      "sha256": "9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6",
+      "bytes": 643854
+    }
+  ]
+}

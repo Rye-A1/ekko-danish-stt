@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14, windows-2022]
+        python: ["3.11"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ matrix.python }}
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+        with:
+          enable-cache: true
+          version: "0.6.6"
+      - run: uv sync --locked --extra local
+      - run: uv run python -m unittest discover -s tests -p "test_*.py"
+      - name: Verify packaged parakeet.cpp ABI
+        shell: bash
+        run: |
+          uv run python - <<'PY'
+          from ekko.artifacts import ensure_parakeet_library
+          from ekko.runtime import _ParakeetCAPI
+          api = _ParakeetCAPI(ensure_parakeet_library())
+          assert api.abi_version == 6
+          print(api.runtime_version)
+          PY
+      - if: runner.os == 'Linux'
+        run: uv build && uvx --from 'twine==7.0.0' twine check dist/*

@@ -1,0 +1,115 @@
+name: Deploy browser Space
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/deploy-browser-space.yml
+      - demo/ekko-tiny-browser/**
+      - src/ekko/release_manifest.json
+      - tests/test_browser_space.py
+      - tests/browser_*.mjs
+  pull_request:
+    paths:
+      - .github/workflows/deploy-browser-space.yml
+      - demo/ekko-tiny-browser/**
+      - src/ekko/release_manifest.json
+      - tests/test_browser_space.py
+      - tests/browser_*.mjs
+  workflow_dispatch:
+    inputs:
+      deploy_space:
+        description: Deploy after building (requires public model URLs)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ekko-tiny-browser-space
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+        with:
+          enable-cache: true
+          version: "0.6.6"
+      - run: uv sync --locked
+      - run: uv run --no-sync python -m unittest tests.test_browser_space -q
+      - name: Build pinned static Space
+        run: demo/ekko-tiny-browser/build.sh
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ekko-tiny-browser-space
+          path: demo/ekko-tiny-browser/dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && ((github.event_name == 'workflow_dispatch' && inputs.deploy_space) || (github.event_name == 'push' && vars.HF_SPACE_DEPLOY_ENABLED == 'true'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: huggingface-space
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.11"
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff # v6
+        with:
+          enable-cache: true
+          version: "0.6.6"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: ekko-tiny-browser-space
+          path: demo/ekko-tiny-browser/dist/
+      - run: uv sync --locked
+      - name: Verify browser model URLs
+        shell: bash
+        run: |
+          while IFS= read -r url; do
+            case "$url" in
+              https://*)
+                status_code=$(curl --head --location --silent --show-error --retry 3 --max-time 30 \
+                  --output /dev/null --write-out '%{http_code}' "$url")
+                if [[ "$status_code" != "200" ]]; then
+                  echo "::error::Browser model is unavailable: $url ($status_code)"
+                  exit 1
+                fi
+                ;;
+              model-files/*)
+                local_path="demo/ekko-tiny-browser/dist/${url%%\?*}"
+                test -f "$local_path" || { echo "::error::Missing bundled file: $local_path"; exit 1; }
+                ;;
+              *)
+                echo "::error::Unsupported browser model URL: $url"
+                exit 1
+                ;;
+            esac
+          done < <(jq -r '.files[].url, .pnc.files[].url' \
+            demo/ekko-tiny-browser/model-config.json)
+      - name: Deploy and verify Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        shell: bash
+        run: |
+          if [[ -z "$HF_TOKEN" ]]; then
+            echo "::error::HF_TOKEN is not configured"
+            exit 1
+          fi
+          uv run --no-sync python demo/ekko-tiny-browser/sync_space.py \
+            --push

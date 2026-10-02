@@ -1,0 +1,6 @@
+{
+  "schema": "ekko-tiny-onnx-runtime-v1",
+  "sampleRate": 16000,
+  "featureDim": 80,
+  "modelType": "nemo_transducer"
+}
