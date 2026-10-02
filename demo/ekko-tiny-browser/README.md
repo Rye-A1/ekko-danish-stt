@@ -14,6 +14,8 @@ short_description: On-device Danish speech recognition and punctuation
 This Space's code is MIT licensed. The Tiny and PnC model weights have separate
 terms in their Hugging Face model repositories.
 
+The [Ekko STT source code](https://github.com/Rye-A1/ekko-danish-stt) is on GitHub.
+
 This static demo transcribes Danish speech locally in the browser with Ekko v1
 Tiny int8, sherpa-onnx WebAssembly, and Silero VAD. Ekko PnC loads separately
 and adds punctuation and capitalization without changing word timestamps.
