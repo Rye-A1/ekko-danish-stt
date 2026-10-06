@@ -93,7 +93,7 @@ class Punctuator:
             mark = label[:-2] if upper else label
             word = words[word_index]
             rendered[word_index] = (
-                (word.capitalize() if upper else word)
+                (self._capitalize_initial_preserving_case(word) if upper else word)
                 + ("" if mark == "O" else mark)
             )
         return rendered
@@ -106,13 +106,16 @@ class Punctuator:
             return self._stabilize_sentence_case(self._punctuate_words_locked(words))
 
     @staticmethod
-    def _stabilize_sentence_case(words: list[str]) -> list[str]:
-        def capitalize_initial(word: str) -> str:
-            for index, character in enumerate(word):
-                if character.isalpha():
-                    return word[:index] + character.upper() + word[index + 1 :]
+    def _capitalize_initial_preserving_case(word: str) -> str:
+        if any(character.isupper() or character.istitle() for character in word):
             return word
+        for index, character in enumerate(word):
+            if character.isalpha():
+                return word[:index] + character.title() + word[index + 1 :]
+        return word
 
+    @staticmethod
+    def _stabilize_sentence_case(words: list[str]) -> list[str]:
         def is_abbreviation(word: str) -> bool:
             return any(
                 word[index - 1].isalpha() and word[index + 1].isalpha()
@@ -123,13 +126,13 @@ class Punctuator:
         if not words:
             return words
         rendered = words.copy()
-        rendered[0] = capitalize_initial(rendered[0])
+        rendered[0] = Punctuator._capitalize_initial_preserving_case(rendered[0])
         for index, word in enumerate(rendered[:-1]):
             if not word.endswith((".", "!", "?")) or is_abbreviation(word):
                 continue
-            if any(character.isupper() for character in rendered[index + 1]):
-                continue
-            rendered[index + 1] = capitalize_initial(rendered[index + 1])
+            rendered[index + 1] = Punctuator._capitalize_initial_preserving_case(
+                rendered[index + 1]
+            )
         return rendered
 
     def _punctuate_words_locked(self, words: Sequence[str]) -> list[str]:

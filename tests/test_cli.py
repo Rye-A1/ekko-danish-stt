@@ -34,7 +34,7 @@ class CLITest(unittest.TestCase):
         payload = json.loads(output.getvalue())
         self.assertEqual(exit_code, 0)
         self.assertEqual(payload["schema"], "ekko-release-manifest-v1")
-        self.assertEqual(payload["release_version"], "0.1.1")
+        self.assertEqual(payload["release_version"], "0.1.2")
         self.assertEqual(payload["models"]["tiny"]["word_timestamps"], True)
 
     @patch("ekko.cli.Punctuator")

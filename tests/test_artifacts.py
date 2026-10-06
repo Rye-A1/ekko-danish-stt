@@ -80,7 +80,7 @@ class NativeArtifactTest(unittest.TestCase):
             self.assertEqual(ensure_hub_artifact("test"), path)
             request = hub.hf_hub_download.call_args.kwargs
             self.assertEqual(request["library_name"], "ekko-stt")
-            self.assertEqual(request["library_version"], "0.1.1")
+            self.assertEqual(request["library_version"], "0.1.2")
             path.write_bytes(b"changed")
             with self.assertRaisesRegex(EkkoError, "checksum mismatch"):
                 ensure_hub_artifact("test", offline=True)
