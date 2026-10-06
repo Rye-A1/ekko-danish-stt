@@ -110,6 +110,25 @@ class PunctuatorTest(unittest.TestCase):
             ],
         )
 
+    def test_uppercase_labels_preserve_existing_capitals(self) -> None:
+        punctuator = self.make_punctuator(max_length=16)
+
+        rendered = punctuator.punctuate_words(
+            ["NATO", "iPhone", "eBay", "hej", "ﬁnt"]
+        )
+
+        self.assertEqual(rendered, ["NATO.", "iPhone.", "eBay.", "Hej.", "Fint."])
+
+    def test_sentence_case_preserves_existing_capitals(self) -> None:
+        rendered = Punctuator._stabilize_sentence_case(
+            ["iPhone", "og", "NATO.", "eBay", "hjælper.", "ﬁnt", "f.eks.", "igen."]
+        )
+
+        self.assertEqual(
+            rendered,
+            ["iPhone", "og", "NATO.", "eBay", "hjælper.", "Fint", "f.eks.", "igen."],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
